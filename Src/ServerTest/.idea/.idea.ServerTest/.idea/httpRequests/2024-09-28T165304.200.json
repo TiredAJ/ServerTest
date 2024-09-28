@@ -1,0 +1,32 @@
+[
+  {
+    "date": "2024-09-29",
+    "temperatureC": -18,
+    "temperatureF": 0,
+    "summary": "Balmy"
+  },
+  {
+    "date": "2024-09-30",
+    "temperatureC": 0,
+    "temperatureF": 32,
+    "summary": "Scorching"
+  },
+  {
+    "date": "2024-10-01",
+    "temperatureC": -4,
+    "temperatureF": 25,
+    "summary": "Hot"
+  },
+  {
+    "date": "2024-10-02",
+    "temperatureC": 52,
+    "temperatureF": 125,
+    "summary": "Hot"
+  },
+  {
+    "date": "2024-10-03",
+    "temperatureC": 4,
+    "temperatureF": 39,
+    "summary": "Chilly"
+  }
+]
