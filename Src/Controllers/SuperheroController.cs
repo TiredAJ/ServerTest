@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ServerTest.DTOs;
 using ServerTest.Models;
 using ServerTest.Service;
 
@@ -10,39 +12,45 @@ namespace ServerTest.Controllers
     public class SuperheroController : Controller
     {
         private readonly STDataContext Context;
+        private readonly IMapper Mapper;
 
-        public SuperheroController(STDataContext _CTX)
-        { Context = _CTX; }
+        public SuperheroController(STDataContext _CTX, IMapper _Mapper)
+        {
+            Context = _CTX;
+            Mapper = _Mapper;
+        }
 
         #region GET        
         [HttpGet]
-        public async Task<ActionResult<List<Superhero>>> GetAllHeroes()
+        public async Task<ActionResult<List<SuperheroDTO>>> GetAllHeroes()
         {
             List<Superhero> Heroes = await Context.Superheroes.ToListAsync();
 
-            return Ok(Heroes);
+            return Ok(Mapper.Map<List<SuperheroDTO>>(Heroes));
         }
         
         [HttpGet("{_ID}")]
-        public async Task<ActionResult<Superhero>> GetHero(int _ID)
+        public async Task<ActionResult<SuperheroDTO>> GetHero(int _ID)
         {
             Superhero? Hero = await Context.Superheroes.FindAsync(_ID);
 
             if (Hero is null)
             { return NotFound(); }
             
-            return Ok(Hero);
+            return Ok(Mapper.Map<SuperheroDTO>(Hero));
         }
         #endregion
 
         #region POST
         [HttpPost]
-        public async Task<ActionResult<Superhero>> AddHero(Superhero _Hero)
+        public async Task<ActionResult<SuperheroDTO>> AddHero(SuperheroDTO _NewHero)
         {
-            var ReturnedSuperhero = await Context.Superheroes.AddAsync(_Hero);
+            var MappedHero = Mapper.Map<Superhero>(_NewHero);
+            
+            var ReturnedSuperhero = await Context.Superheroes.AddAsync(MappedHero);
             await Context.SaveChangesAsync();
             
-            return Ok(ReturnedSuperhero.Entity);
+            return Ok(Mapper.Map<SuperheroDTO>(ReturnedSuperhero.Entity));
         }
         #endregion
 
