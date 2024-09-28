@@ -1,3 +1,5 @@
+using ServerTest.Service;
+
 namespace ServerTest;
 
 internal static class Program
@@ -13,12 +15,17 @@ internal static class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        builder.Services.AddSingleton<STDataContext>(S
+            => new STDataContext(builder.Configuration.GetConnectionString("DefaultConnection")));
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
-        { app.UseSwagger();
-          app.UseSwaggerUI(); }
+        { 
+            app.UseSwagger();
+            app.UseSwaggerUI(); 
+        }
 
         app.UseHttpsRedirection();
 
