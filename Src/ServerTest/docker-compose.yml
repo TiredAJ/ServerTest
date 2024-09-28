@@ -1,6 +1,34 @@
 ﻿services:
-  servertest:
-    image: servertest
-    build:
-      context: .
-      dockerfile: Dockerfile
+  #servertest:
+  #  image: servertest
+  #  build:
+  #    context: .
+  #    dockerfile: Dockerfile
+  #  depends_on:
+  #    db:
+  #      condition: service_healthy
+  db:
+    container_name: postgres
+    image: postgres:14.13-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ServerPassword1
+      POSTGRES_USER: AJAdmin
+      POSTGRES_DB: MainDB
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=ATotallyRealEmail@IPromise.co.wales
+      - PGADMIN_DEFAULT_PASSWORD=ServerPassword1
+    ports:
+      - "5050:80"
+    restart: always
